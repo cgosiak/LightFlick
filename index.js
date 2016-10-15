@@ -67,7 +67,7 @@ function LightOn() {
 
 function LightOff() {
     var spawn = require('child_process').spawn,
-    	py = spawn('python3', ['./on.py']),
+    	py = spawn('python3', ['./off.py']),
     	dataString = '';
 
     py.stdout.on('data', function(data) {
