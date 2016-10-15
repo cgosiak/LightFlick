@@ -11,9 +11,7 @@ io.on('connection', function(socket) {
 
     var lightIsOn = false;
 
-    var spawn = require('child_process').spawn,
-	py = spawn('python3', ['./off.py']),
-	dataString = '';
+    SendLightStatus();
 
     socket.on('shake', function() {
             // Shake has taken place
@@ -34,10 +32,26 @@ io.on('connection', function(socket) {
                 console.log(dataString);
             });
 
+	    SendLightStatus();
+
             lightIsOn = !lightIsOn;
     });
 
 });
+
+
+function SendLightStatus() {
+    var spawn = require('child_process').spawn,
+	py = spawn('python3', ['./status.py']),
+	dataString = '';
+
+    py.stdout.on('data', function(data) {
+        dataString += data.toString();
+        
+	io.emit('status updated', dataString);
+    });
+}
+
 
 http.listen(4545, function() {
     console.log('listening on *:4545');

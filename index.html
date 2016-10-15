@@ -7,12 +7,18 @@
 
 <body>
     <h1>Shake Your Phone!</h1>
+    <h2>Light Status: <span id="status"></span></h2>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="http://tcdesignmn.com/CDN/shake.js"></script>
     <script type="text/javascript">
 	window.onload = function() {
 	var socket = io();
+
+        socket.on('status updated', function (data) {
+            $('#status').text(data);
+        });
+
     	//create a new instance of shake.js.
     	var myShakeEvent = new Shake({
             threshold: 10
