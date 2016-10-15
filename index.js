@@ -9,32 +9,21 @@ app.get('/', function(req, res) {
 
 io.on('connection', function(socket) {
 
-    var lightIsOn = SendLightStatus();
+    var lightIsOn = false;
 
-    console.log("First Light: " + lightIsON);
+    LightOff();
 
     socket.on('shake', function() {
             // Shake has taken place
             console.log("Shook!");
 
-	    console.log("Light: " + lightIsOn);
-
             if (lightIsOn) {
-                var spawn = require('child_process').spawn,
-                    py = spawn('python3', ['./off.py']),
-                    dataString = '';
+                LightOff();
             } else {
-                var spawn = require('child_process').spawn,
-                    py = spawn('python3', ['./on.py']),
-                    dataString = '';
+                LightOn();
             }
 
-            py.stdout.on('data', function(data) {
-                dataString += data.toString();
-                console.log(dataString);
-            });
-
-	   lightIsOn =  SendLightStatus();
+	    lightIsOn = !lightIsOn;
     });
 
 });
@@ -63,9 +52,26 @@ function SendLightStatus() {
     });
 }
 
+function LightOn() {
+    var spawn = require('child_process').spawn,
+    	py = spawn('python3', ['./on.py']),
+    	dataString = '';
 
-function ToggleLight() {
+    py.stdout.on('data', function(data) {
+        dataString += data.toString();
+        console.log(dataString);
+    });
+}
 
+function LightOff() {
+    var spawn = require('child_process').spawn,
+    	py = spawn('python3', ['./on.py']),
+    	dataString = '';
+
+    py.stdout.on('data', function(data) {
+        dataString += data.toString();
+        console.log(dataString);
+    });
 }
 
 
