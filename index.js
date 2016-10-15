@@ -11,9 +11,7 @@ io.on('connection', function(socket) {
 
     var lightIsOn = false;
 
-    console.log(lightIsOn);
-
-    LightOff();
+    LightOff();    
 
     socket.on('shake', function() {
             // Shake has taken place
@@ -41,14 +39,10 @@ function SendLightStatus() {
         
 	io.emit('status updated', dataString);
 
-	console.log("Status: " + dataString);
-
 	if(parseInt(dataString, 10) == 0) {
-	    console.log("Is 0: " + dataString);
 	    return false;
 	}
 	else {
-	    console.log("Is 1: " + dataString);
 	    return true;
 	}
     });
@@ -62,6 +56,7 @@ function LightOn() {
     py.stdout.on('data', function(data) {
         dataString += data.toString();
         console.log(dataString);
+	SendLightStatus();
     });
 }
 
@@ -73,6 +68,7 @@ function LightOff() {
     py.stdout.on('data', function(data) {
         dataString += data.toString();
         console.log(dataString);
+	SendLightStatus();
     });
 }
 

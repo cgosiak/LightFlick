@@ -16,7 +16,14 @@
 	var socket = io();
 
         socket.on('status updated', function (data) {
-            $('#status').text(data);
+            var status = "ERROR";
+	    if(parseInt(data) == 0) {
+		status = "OFF";
+	    }
+	    else {
+		status = "ON";
+	    }
+	    $('#status').text(status);
         });
 
     	//create a new instance of shake.js.
