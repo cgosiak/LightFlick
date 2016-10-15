@@ -9,13 +9,15 @@ app.get('/', function(req, res) {
 
 io.on('connection', function(socket) {
 
-    var lightIsOn = false;
+    var lightIsOn = SendLightStatus();
 
-    SendLightStatus();
+    console.log("First Light: " + lightIsON);
 
     socket.on('shake', function() {
             // Shake has taken place
             console.log("Shook!");
+
+	    console.log("Light: " + lightIsOn);
 
             if (lightIsOn) {
                 var spawn = require('child_process').spawn,
@@ -32,9 +34,7 @@ io.on('connection', function(socket) {
                 console.log(dataString);
             });
 
-	    SendLightStatus();
-
-            lightIsOn = !lightIsOn;
+	   lightIsOn =  SendLightStatus();
     });
 
 });
@@ -49,7 +49,23 @@ function SendLightStatus() {
         dataString += data.toString();
         
 	io.emit('status updated', dataString);
+
+	console.log("Status: " + dataString);
+
+	if(parseInt(dataString, 10) == 0) {
+	    console.log("Is 0: " + dataString);
+	    return false;
+	}
+	else {
+	    console.log("Is 1: " + dataString);
+	    return true;
+	}
     });
+}
+
+
+function ToggleLight() {
+
 }
 
 
