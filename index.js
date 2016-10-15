@@ -11,6 +11,10 @@ io.on('connection', function(socket) {
 
     var lightIsOn = false;
 
+    var spawn = require('child_process').spawn,
+	py = spawn('python3', ['./off.py']),
+	dataString = '';
+
     socket.on('shake', function() {
             // Shake has taken place
             console.log("Shook!");
