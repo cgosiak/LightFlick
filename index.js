@@ -11,6 +11,8 @@ io.on('connection', function(socket) {
 
     var lightIsOn = false;
 
+    console.log(lightIsOn);
+
     LightOff();
 
     socket.on('shake', function() {
